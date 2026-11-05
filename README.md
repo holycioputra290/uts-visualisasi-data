@@ -1,15 +1,15 @@
 # 📊 Dashboard Analisis Tren Belanja Pelanggan (UTS Visualisasi Data)
 
 ### 👤 Identitas Mahasiswa
-- **Nama:** Holycio Aditia Putra
-- **NPM:** [Isi NPM Kamu]
-- **Program Studi:** Sistem Informasi
-- **Mata Kuliah:** Visualisasi Data
+- Nama: Holycio Aditia Putra
+- NPM: 241041008
+- Program Studi: Manajemen Informatika
+- Mata Kuliah: Visualisasi Data
 
 ---
 
 ## 🔗 Tautan Penting
-- **Live Dashboard:** [Taruh Link Streamlit Cloud Kamu di Sini Nanti]
+- **Live Dashboard:**
 - **Dataset Asli (Kaggle):** https://www.kaggle.com/datasets/iamsouravbanerjee/customer-shopping-trends-dataset
 
 ---
