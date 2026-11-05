@@ -13,7 +13,7 @@ st.set_page_config(
 @st.cache_data
 def load_data():
     # Mengambil dataset dari folder data/
-    df = pd.read_csv('data/shopping_trends_updated.csv')
+    df = pd.read_csv('shopping_trends_updated.csv')
     
     # Data Cleaning Dasar
     df = df.drop_duplicates()
