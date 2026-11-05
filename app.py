@@ -2,65 +2,85 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# 1. Konfigurasi Halaman & Tema UI
+# 1. Konfigurasi Halaman Web App
 st.set_page_config(
-    page_title="Dashboard Customer Shopping Trends - UTS",
-    page_icon="🛍️",
+    page_title="Shopping Trends Dashboard - macOS",
+    page_icon="💻",
     layout="wide"
 )
 
 # ---------------------------------------------------------
-# CUSTOM CSS: STYLING macOS MODERN (DARK & LIGHT FRIENDLY)
+# CUSTOM CSS: DESAIN WEB APPLICATION ALA macOS / APPLE UI
 # ---------------------------------------------------------
 st.markdown("""
     <style>
-    /* Font global ala Apple */
+    /* Font Apple SF Pro Look */
     html, body, [class*="css"] {
-        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     
-    # Custom Card KPI (Frosted Glass / Translucent Look)
+    /* Background Utama Aplikasi Web */
+    .stApp {
+        background-color: #0f1117;
+    }
+    
+    /* Styling Sidebar ala Control Center / Finder macOS */
+    [data-testid="stSidebar"] {
+        background-color: #161922;
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    /* Box Transparan / Frosted Glass Container untuk Grafik & Modul */
+    .css-card {
+        background: #1e2230;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* KPI Card Style ala Widget iOS / macOS */
     div[data-testid="stMetric"] {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 20px 24px;
+        background: #1e2230;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 18px 22px;
         border-radius: 16px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
         transition: transform 0.2s ease, border-color 0.2s ease;
     }
     
     div[data-testid="stMetric"]:hover {
-        transform: translateY(-2px);
-        border-color: rgba(255, 255, 255, 0.25);
+        transform: translateY(-3px);
+        border-color: #0A84FF;
     }
 
     div[data-testid="stMetricLabel"] {
+        color: #8e8e93;
         font-weight: 500;
-        opacity: 0.8;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
     }
 
     div[data-testid="stMetricValue"] {
+        color: #ffffff;
         font-weight: 700;
-        font-size: 1.8rem;
+        font-size: 1.7rem;
     }
 
-    # Style Expander / Insight Card
+    /* Expander Storytelling Card */
     .streamlit-expanderHeader {
-        font-weight: 600;
+        background-color: #1e2230 !important;
         border-radius: 12px;
-        background: rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #ffffff !important;
     }
-
-    /* Accent color pada slider */
+    
+    /* Slider Warna Accent Apple Blue */
     .stSlider > div > div > div > div {
         background-color: #0A84FF !important;
     }
     </style>
 """, unsafe_allow_html=True)
-
 
 # 2. Load Dataset
 @st.cache_data
@@ -73,9 +93,10 @@ def load_data():
 df = load_data()
 
 # ---------------------------------------------------------
-# SIDEBAR: Control Center (macOS Style)
+# SIDEBAR: Control Center Web
 # ---------------------------------------------------------
-st.sidebar.title("🎛️ Control Center")
+st.sidebar.markdown("### 🎛️ Control Center")
+st.sidebar.caption("Filter Dashboard Interaktif")
 st.sidebar.markdown("---")
 
 list_category = df['Category'].unique().tolist()
@@ -100,7 +121,7 @@ selected_age = st.sidebar.slider(
     value=(min_age, max_age)
 )
 
-# Filter Data
+# Apply Filter
 df_filtered = df[
     (df['Category'].isin(selected_category)) &
     (df['Gender'].isin(selected_gender)) &
@@ -108,22 +129,27 @@ df_filtered = df[
 ]
 
 # ---------------------------------------------------------
-# HEADER & STORYTELLING
+# HEADER WEB & TOP NAVBAR LOOK
 # ---------------------------------------------------------
-st.title("🛍️ Shopping Trends Analytics")
-st.caption("Visualisasi Data | UTS Project-Based")
+st.markdown("""
+    <div style="background-color: #161922; padding: 20px 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 25px;">
+        <h2 style="margin:0; color: #ffffff; font-weight: 700;">🛍️ Customer Shopping Analytics App</h2>
+        <p style="margin: 4px 0 0 0; color: #8e8e93; font-size: 0.95rem;">Web Dashboard Visualisasi Data — UTS System Information Project</p>
+    </div>
+""", unsafe_allow_html=True)
 
-with st.expander("📌 Executive Summary & Key Insights", expanded=True):
+# Storytelling Component
+with st.expander("📌 Executive Summary & Data Insights", expanded=True):
     st.write("""
-    * **Kategori Dominan:** Produk *Clothing* & *Accessories* merupakan penggerak utama total pendapatan.
-    * **Demografi Pembeli:** Segmen usia muda hingga pertengahan (18–50 tahun) memiliki frekuensi belanja paling stabil.
-    * **Skor Kepuasan:** Rata-rata rating ulasan berada pada angka **3.75 / 5.0**, menunjukkan kepuasan layanan yang baik secara menyeluruh.
+    * **Pendapatan Utama:** Sektor *Clothing* & *Accessories* memberikan kontribusi nilai penjualan tertinggi.
+    * **Demografi Pembeli:** Mayoritas pelanggan aktif berada pada rentang usia 18 hingga 50 tahun.
+    * **Tingkat Kepuasan:** Rata-rata kepuasan konsumen mencapai **3.75 / 5.0**, tergolong positif namun tetap membutuhkan optimasi pada lini produk tertentu.
     """)
 
 st.write("")
 
 # ---------------------------------------------------------
-# KOMPONEN 1: KPI Cards (Widget macOS Frosted Glass)
+# MODUL 1: KPI WIDGETS
 # ---------------------------------------------------------
 col1, col2, col3, col4 = st.columns(4)
 
@@ -141,23 +167,23 @@ with col3:
 
 with col4:
     avg_rating = df_filtered['Review Rating'].mean()
-    st.metric(label="Avg Review Rating", value=f"⭐ {avg_rating:.2f}")
+    st.metric(label="Avg Rating", value=f"⭐ {avg_rating:.2f}")
 
-st.write("")
 st.write("")
 
 # ---------------------------------------------------------
-# KOMPONEN 2: Visualisasi Data (Plotly Dark Theme Adaptation)
+# MODUL 2: WEB CONTAINER CHARTS (KARTU KACA SEPARATE)
 # ---------------------------------------------------------
-st.subheader("📊 Analytics Overview")
+st.markdown("### 📊 Analytics Overview")
 
+apple_colors = ['#0A84FF', '#30D158', '#FF9F0A', '#BF5AF2', '#FF453A', '#64D2FF']
+
+# Row 1 Grafik
 row1_col1, row1_col2 = st.columns(2)
 
-# Color palette Apple (iOS Vibrant)
-apple_palette = ['#0A84FF', '#30D158', '#FF9F0A', '#BF5AF2', '#FF453A', '#64D2FF']
-
 with row1_col1:
-    st.write("**Total Revenue per Category**")
+    st.markdown('<div class="css-card">', unsafe_allow_html=True)
+    st.markdown("**Total Revenue per Category**")
     cat_sales = df_filtered.groupby('Category')['Purchase Amount (USD)'].sum().reset_index()
     fig_bar = px.bar(
         cat_sales,
@@ -165,40 +191,47 @@ with row1_col1:
         y='Purchase Amount (USD)',
         color='Category',
         text_auto='.2s',
-        color_discrete_sequence=apple_palette
+        color_discrete_sequence=apple_colors
     )
     fig_bar.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#ffffff"),
         showlegend=False,
-        margin=dict(l=20, r=20, t=30, b=20),
-        xaxis_title="",
-        yaxis_title="Revenue ($)"
+        margin=dict(l=10, r=10, t=30, b=10),
+        xaxis=dict(title="", showgrid=False),
+        yaxis=dict(title="Revenue ($)", showgrid=True, gridcolor="rgba(255,255,255,0.05)")
     )
     st.plotly_chart(fig_bar, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with row1_col2:
-    st.write("**Payment Method Share**")
+    st.markdown('<div class="css-card">', unsafe_allow_html=True)
+    st.markdown("**Payment Method Share**")
     payment_counts = df_filtered['Payment Method'].value_counts().reset_index()
     payment_counts.columns = ['Payment Method', 'Count']
     fig_pie = px.pie(
         payment_counts,
         names='Payment Method',
         values='Count',
-        hole=0.5,
-        color_discrete_sequence=apple_palette
+        hole=0.55,
+        color_discrete_sequence=apple_colors
     )
     fig_pie.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        margin=dict(l=20, r=20, t=30, b=20)
+        font=dict(color="#ffffff"),
+        margin=dict(l=10, r=10, t=30, b=10)
     )
     st.plotly_chart(fig_pie, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
+# Row 2 Grafik
 row2_col1, row2_col2 = st.columns(2)
 
 with row2_col1:
-    st.write("**Customer Age Distribution**")
+    st.markdown('<div class="css-card">', unsafe_allow_html=True)
+    st.markdown("**Customer Age Distribution**")
     fig_hist = px.histogram(
         df_filtered,
         x='Age',
@@ -208,27 +241,32 @@ with row2_col1:
     fig_hist.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        margin=dict(l=20, r=20, t=30, b=20),
-        xaxis_title="Age",
-        yaxis_title="Count"
+        font=dict(color="#ffffff"),
+        margin=dict(l=10, r=10, t=30, b=10),
+        xaxis=dict(title="Age", showgrid=False),
+        yaxis=dict(title="Count", showgrid=True, gridcolor="rgba(255,255,255,0.05)")
     )
     st.plotly_chart(fig_hist, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with row2_col2:
-    st.write("**Age vs Purchase Amount**")
+    st.markdown('<div class="css-card">', unsafe_allow_html=True)
+    st.markdown("**Age vs Purchase Amount**")
     fig_scatter = px.scatter(
         df_filtered,
         x='Age',
         y='Purchase Amount (USD)',
         color='Category',
-        color_discrete_sequence=apple_palette,
+        color_discrete_sequence=apple_colors,
         hover_data=['Item Purchased']
     )
     fig_scatter.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        margin=dict(l=20, r=20, t=30, b=20),
-        xaxis_title="Age",
-        yaxis_title="Purchase Amount ($)"
+        font=dict(color="#ffffff"),
+        margin=dict(l=10, r=10, t=30, b=10),
+        xaxis=dict(title="Age", showgrid=False),
+        yaxis=dict(title="Purchase Amount ($)", showgrid=True, gridcolor="rgba(255,255,255,0.05)")
     )
     st.plotly_chart(fig_scatter, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
