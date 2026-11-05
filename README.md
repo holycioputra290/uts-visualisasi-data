@@ -25,4 +25,4 @@
 ## 💻 Panduan Menjalankan Proyek Secara Lokal
 1. Clone repositori ini:
    ```bash
-   git clone [https://github.com/holycioputra290/uts-visualisasi-data.git](https://github.com/USERNAME-KAMU/uts-visualisasi-data.git)
+   git clone [https://github.com/holycioputra290/uts-visualisasi-data.git](https://github.com/holycioputra290/uts-visualisasi-data.git)
