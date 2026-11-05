@@ -9,7 +9,7 @@
 ---
 
 ## 🔗 Tautan Penting
-- **Live Dashboard:**
+- **Live Dashboard:** https://uts-visualisasi-data-xtqwrchyhm6kdbdy8vrghc.streamlit.app/
 - **Dataset Asli (Kaggle):** https://www.kaggle.com/datasets/iamsouravbanerjee/customer-shopping-trends-dataset
 
 ---
