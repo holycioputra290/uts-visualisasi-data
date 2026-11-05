@@ -5,68 +5,58 @@ import plotly.express as px
 # 1. Konfigurasi Halaman & Tema UI
 st.set_page_config(
     page_title="Dashboard Customer Shopping Trends - UTS",
-    page_icon="🍎",
+    page_icon="🛍️",
     layout="wide"
 )
 
 # ---------------------------------------------------------
-# CUSTOM CSS: STYLING ALA macOS / APPLE DESIGN
+# CUSTOM CSS: STYLING macOS MODERN (DARK & LIGHT FRIENDLY)
 # ---------------------------------------------------------
 st.markdown("""
     <style>
     /* Font global ala Apple */
-    html, body, [class*="css"]  {
+    html, body, [class*="css"] {
         font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     
-    # Custom Sidebar ala macOS Finder
-    [data-testid="stSidebar"] {
-        background-color: #f5f5f7;
-        border-right: 1px solid #e5e5ea;
-    }
-
-    # Style untuk KPI Card ala Widget iOS/macOS
+    # Custom Card KPI (Frosted Glass / Translucent Look)
     div[data-testid="stMetric"] {
-        background-color: #ffffff;
-        border: 1px solid #e5e5ea;
-        padding: 18px 24px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 20px 24px;
         border-radius: 16px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: transform 0.2s ease, border-color 0.2s ease;
     }
     
     div[data-testid="stMetric"]:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        border-color: rgba(255, 255, 255, 0.25);
     }
 
     div[data-testid="stMetricLabel"] {
         font-weight: 500;
-        color: #8e8e93;
-        font-size: 0.9rem;
+        opacity: 0.8;
+        font-size: 0.95rem;
     }
 
     div[data-testid="stMetricValue"] {
         font-weight: 700;
-        color: #1c1c1e;
+        font-size: 1.8rem;
     }
 
-    # Container Card untuk Grafik
-    div[data-testid="stVerticalBlock"] > div > div[data-testid="stVerticalBlock"] {
-        background-color: #ffffff;
-        border-radius: 16px;
-    }
-
-    # Expander Storytelling ala macOS Card
+    # Style Expander / Insight Card
     .streamlit-expanderHeader {
         font-weight: 600;
         border-radius: 12px;
-        background-color: #f2f2f7;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    # Custom tombol & slider warna khas Apple (Accent Blue)
+    /* Accent color pada slider */
     .stSlider > div > div > div > div {
-        background-color: #007aff !important;
+        background-color: #0A84FF !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -83,7 +73,7 @@ def load_data():
 df = load_data()
 
 # ---------------------------------------------------------
-# SIDEBAR: Filter Interaktif (macOS Control Center Style)
+# SIDEBAR: Control Center (macOS Style)
 # ---------------------------------------------------------
 st.sidebar.title("🎛️ Control Center")
 st.sidebar.markdown("---")
@@ -133,7 +123,7 @@ with st.expander("📌 Executive Summary & Key Insights", expanded=True):
 st.write("")
 
 # ---------------------------------------------------------
-# KOMPONEN 1: KPI Cards (Widget macOS Style)
+# KOMPONEN 1: KPI Cards (Widget macOS Frosted Glass)
 # ---------------------------------------------------------
 col1, col2, col3, col4 = st.columns(4)
 
@@ -157,14 +147,14 @@ st.write("")
 st.write("")
 
 # ---------------------------------------------------------
-# KOMPONEN 2: Visualisasi Data (Plotly Clean Theme)
+# KOMPONEN 2: Visualisasi Data (Plotly Dark Theme Adaptation)
 # ---------------------------------------------------------
 st.subheader("📊 Analytics Overview")
 
 row1_col1, row1_col2 = st.columns(2)
 
-# Color palette ala Apple / iOS
-apple_palette = ['#007AFF', '#34C759', '#FF9500', '#AF52DE', '#FF2D55', '#5856D6']
+# Color palette Apple (iOS Vibrant)
+apple_palette = ['#0A84FF', '#30D158', '#FF9F0A', '#BF5AF2', '#FF453A', '#64D2FF']
 
 with row1_col1:
     st.write("**Total Revenue per Category**")
@@ -178,7 +168,8 @@ with row1_col1:
         color_discrete_sequence=apple_palette
     )
     fig_bar.update_layout(
-        template="plotly_white",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         showlegend=False,
         margin=dict(l=20, r=20, t=30, b=20),
         xaxis_title="",
@@ -198,7 +189,8 @@ with row1_col2:
         color_discrete_sequence=apple_palette
     )
     fig_pie.update_layout(
-        template="plotly_white",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         margin=dict(l=20, r=20, t=30, b=20)
     )
     st.plotly_chart(fig_pie, use_container_width=True)
@@ -211,10 +203,11 @@ with row2_col1:
         df_filtered,
         x='Age',
         nbins=15,
-        color_discrete_sequence=['#007AFF']
+        color_discrete_sequence=['#0A84FF']
     )
     fig_hist.update_layout(
-        template="plotly_white",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         margin=dict(l=20, r=20, t=30, b=20),
         xaxis_title="Age",
         yaxis_title="Count"
@@ -232,7 +225,8 @@ with row2_col2:
         hover_data=['Item Purchased']
     )
     fig_scatter.update_layout(
-        template="plotly_white",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         margin=dict(l=20, r=20, t=30, b=20),
         xaxis_title="Age",
         yaxis_title="Purchase Amount ($)"
